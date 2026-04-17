@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sharipov Sanat | Full Portfolio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        /* --- ASOSIY STILLAR --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: #020617; 
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        #bg-shapes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .floating-shape {
+            position: absolute;
+            background: rgba(0, 188, 212, 0.1);
+            border: 1px solid rgba(0, 188, 212, 0.2);
+            border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+            transition: transform 0.2s ease-out;
+        }
+
+        /* --- HEADER & NAVIGATION --- */
+        header {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 1100px;
+            padding: 15px 30px;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        #progress-bar {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            height: 2px;
+            width: 0%;
+            background: #00bcd4;
+            transition: width 0.1s;
+        }
+
+        .logo { font-size: 1.4rem; font-weight: 800; color: #00bcd4; }
+        nav { display: flex; gap: 20px; }
+        nav a { color: white; text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: 0.3s; }
+        nav a:hover, nav a.active { color: #00bcd4; }
+
+        /* --- SECTIONS --- */
+        section {
+            padding: 150px 10% 80px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            margin-bottom: 40px;
+            border-left: 5px solid #00bcd4;
+            padding-left: 15px;
+        }
+
+        /* --- HOME --- */
+        #home { text-align: center; }
+        #home h1 { font-size: 4rem; margin-bottom: 10px; }
+        #home p { font-size: 1.5rem; color: #00bcd4; }
+
+        /* --- ABOUT (SAQLANADIGAN RASM BILAN) --- */
+        .about-content-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .about-main-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 60px;
+            align-items: flex-start;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .image-picker-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .profile-circle {
+            width: 280px;
+            height: 280px;
+            border: 4px solid #00bcd4;
+            border-radius: 50%;
+            overflow: hidden;
+            background: rgba(0, 207, 235, 0.05);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        #user-photo {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: none;
+        }
+
+        .photo-btn {
+            background: #00bcd4;
+            color: #020617;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-delete { background: #ff5f56 !important; color: white !important; }
+
+        .about-text-content { flex: 1; min-width: 300px; }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
+            margin-top: 25px;
+        }
+
+        .stat-card {
+            background: rgba(255,255,255,0.05);
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .stat-card h4 { color: #00bcd4; margin-bottom: 5px; }
+
+        /* --- PORTFOLIO --- */
+        .project-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 30px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+        }
+
+        .code-window {
+            background: #0d1117;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            overflow-x: auto;
+        }
+
+        .code-window pre { color: #79c0ff; font-size: 0.9rem; }
+
+        /* --- SKILLS --- */
+        .skills-wrap { display: flex; gap: 15px; flex-wrap: wrap; }
+        .skill-box {
+            padding: 12px 30px;
+            background: rgba(0, 188, 212, 0.1);
+            border: 1px solid #00bcd4;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+
+        /* --- CONTACT --- */
+        .contact-container {
+            max-width: 800px;
+            background: rgba(255,255,255,0.02);
+            padding: 40px;
+            border-radius: 25px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .form-group { display: flex; flex-direction: column; gap: 20px; }
+        input, textarea {
+            padding: 15px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 10px;
+            color: white;
+            outline: none;
+            transition: 0.3s;
+        }
+        input:focus, textarea:focus { border-color: #00bcd4; }
+
+        footer { text-align: center; padding: 60px; border-top: 1px solid rgba(255,255,255,0.05); }
+
+        @media (max-width: 768px) {
+            nav { display: none; }
+            #home h1 { font-size: 2.8rem; }
+            .about-main-row { text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="bg-shapes"></div>
+
+    <header>
+        <div class="logo">SANAT</div>
+        <nav id="nav-links">
+            <a href="#home">Home</a>
+            <a href="#about">About</a>
+            <a href="#portfolio">Portfolio</a>
+            <a href="#skills">Skills</a>
+            <a href="#contact">Contact</a>
+        </nav>
+        <div id="progress-bar"></div>
+    </header>
+
+    <section id="home">
+        <h1>Hello, I am <span style="color: #00bcd4;">Sharipov Sanat</span></h1>
+        <p>HTML & CSS Developer</p>
+    </section>
+
+    <section id="about">
+        <div class="about-content-wrapper">
+            <h2 class="section-title">About Me</h2>
+            <div class="about-main-row">
+                <div class="image-picker-box">
+                    <div class="profile-circle">
+                        <div id="placeholder-info" style="text-align: center; color: #00bcd4;">
+                            <i class="fas fa-camera" style="font-size: 3rem;"></i>
+                            <p style="margin-top: 10px;">Rasm yuklang</p>
+                        </div>
+                        <img src="" id="user-photo">
+                    </div>
+                    <div style="display: flex; gap: 10px;">
+                        <button class="photo-btn" onclick="document.getElementById('file-input').click()">Rasm qo'yish</button>
+                        <button class="photo-btn btn-delete" onclick="removePhoto()">O'chirish</button>
+                    </div>
+                </div>
+                <div class="about-text-content">
+                    <p>Men kreativ veb-sahifalar yaratishga qiziqaman. Loyihalarimda asosan qulaylik va dizaynga e'tibor beraman.</p>
+                    <div class="stats-grid">
+                        <div class="stat-card"><h4>Education</h4><p>Dasturlash akademiyasi</p></div>
+                        <div class="stat-card"><h4>Experience</h4><p>+1 Years Practice</p></div>
+                        <div class="stat-card"><h4>Lessons</h4><p>Frontend Dev</p></div>
+                        <div class="stat-card"><h4>Projects</h4><p>10+ Mini Projects</p></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <input type="file" id="file-input" accept="image/*" style="display: none;" onchange="saveImage(event)">
+    </section>
+
+    <section id="portfolio">
+        <h2 class="section-title">Portfolio</h2>
+        <div class="project-card">
+            <h3>Web Design Project</h3>
+            <div class="code-window">
+                <pre>
+&lt;div class="container"&gt;
+  &lt;h1&gt;Project Title&lt;/h1&gt;
+  &lt;p&gt;Responsive layout sample.&lt;/p&gt;
+&lt;/div&gt;
+                </pre>
+            </div>
+            <p>Ushbu loyiha HTML5 va CSS3 yordamida to'liq moslashuvchan (responsive) qilib tayyorlangan.</p>
+        </div>
+    </section>
+
+    <section id="skills">
+        <h2 class="section-title">My Skills</h2>
+        <div class="skills-wrap">
+            <div class="skill-box">HTML5</div>
+            <div class="skill-box">CSS3 / SCSS</div>
+            <div class="skill-box">Responsive Design</div>
+            <div class="skill-box">Git / GitHub</div>
+            <div class="skill-box">Bootstrap</div>
+            <div class="skill-box">Python Basics</div>
+        </div>
+    </section>
+
+    <section id="contact">
+        <h2 class="section-title">Contact Me</h2>
+        <div class="contact-container">
+            <form class="form-group" onsubmit="event.preventDefault(); alert('Xabar yuborildi!');">
+                <input type="text" placeholder="Ismingiz" required>
+                <input type="email" placeholder="Email manzilingiz" required>
+                <textarea placeholder="Xabaringizni yozing..." rows="5" required></textarea>
+                <button type="submit" class="photo-btn" style="width: 200px;">Xabarni yuborish</button>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 SHARIPOV SANAT | Barcha huquqlar himoyalangan</p>
+    </footer>
+
+    <script>
+        const userPhoto = document.getElementById('user-photo');
+        const placeholder = document.getElementById('placeholder-info');
+
+        // --- RASMNI XOTIRADAN YUKLASH ---
+        window.onload = function() {
+            const savedImg = localStorage.getItem('userAvatar');
+            if (savedImg) {
+                userPhoto.src = savedImg;
+                userPhoto.style.display = 'block';
+                placeholder.style.display = 'none';
+            }
+        };
+
+        // --- RASMNI SAQLASH (LOCAL STORAGE) ---
+        function saveImage(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const imgData = e.target.result;
+                    userPhoto.src = imgData;
+                    userPhoto.style.display = 'block';
+                    placeholder.style.display = 'none';
+                    localStorage.setItem('userAvatar', imgData);
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // --- RASMNI O'CHIRISH ---
+        function removePhoto() {
+            userPhoto.src = "";
+            userPhoto.style.display = 'none';
+            placeholder.style.display = 'block';
+            localStorage.removeItem('userAvatar');
+        }
+
+        // --- SCROLL PROGRESS & ACTIVE LINK ---
+        window.onscroll = function() {
+            let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            let scrolled = (winScroll / height) * 100;
+            document.getElementById("progress-bar").style.width = scrolled + "%";
+
+            const sections = document.querySelectorAll("section");
+            const navLinks = document.querySelectorAll("nav a");
+            sections.forEach(sec => {
+                let top = sec.offsetTop - 150;
+                if (winScroll >= top && winScroll < top + sec.clientHeight) {
+                    navLinks.forEach(link => {
+                        link.classList.remove("active");
+                        if (sec.id === link.getAttribute("href").substring(1)) link.classList.add("active");
+                    });
+                }
+            });
+        };
+
+        // --- FON SHAKLLARI HARAKATI ---
+        const shapeContainer = document.getElementById('bg-shapes');
+        const shapes = [];
+        for (let i = 0; i < 15; i++) {
+            const shape = document.createElement('div');
+            shape.classList.add('floating-shape');
+            const size = Math.random() * 80 + 40;
+            shape.style.width = size + 'px';
+            shape.style.height = size + 'px';
+            shape.style.left = Math.random() * 100 + '%';
+            shape.style.top = Math.random() * 100 + '%';
+            shapeContainer.appendChild(shape);
+            shapes.push(shape);
+        }
+
+        document.addEventListener('mousemove', (e) => {
+            const { clientX, clientY } = e;
+            shapes.forEach((shape, index) => {
+                const speed = (index + 1) * 0.02;
+                const x = (clientX - window.innerWidth / 2) * speed;
+                const y = (clientY - window.innerHeight / 2) * speed;
+                shape.style.transform = `translate(${x}px, ${y}px)`;
+            });
+        });
+    </script>
+</body>
+</html>
